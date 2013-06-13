@@ -38,22 +38,26 @@ namespace ClearCanvas.Ris.Shreds.MPPS
             sop.SyntaxList.Add(TransferSyntax.ExplicitVrLittleEndian);
             sop.SyntaxList.Add(TransferSyntax.ImplicitVrLittleEndian);
             sop.SyntaxList.Add(TransferSyntax.ExplicitVrBigEndian);
+            _supportedSops.Add(sop);
 
 
             sop = new SupportedSop {SopClass = SopClass.ModalityPerformedProcedureStepSopClass};
             sop.SyntaxList.Add(TransferSyntax.ExplicitVrLittleEndian);
             sop.SyntaxList.Add(TransferSyntax.ImplicitVrLittleEndian);
             sop.SyntaxList.Add(TransferSyntax.ExplicitVrBigEndian);
+            _supportedSops.Add(sop);
 
             sop = new SupportedSop {SopClass = SopClass.ModalityPerformedProcedureStepNotificationSopClass};
             sop.SyntaxList.Add(TransferSyntax.ExplicitVrLittleEndian);
             sop.SyntaxList.Add(TransferSyntax.ImplicitVrLittleEndian);
             sop.SyntaxList.Add(TransferSyntax.ExplicitVrBigEndian);
+            _supportedSops.Add(sop);
 
             sop = new SupportedSop {SopClass = SopClass.ModalityPerformedProcedureStepRetrieveSopClass};
             sop.SyntaxList.Add(TransferSyntax.ExplicitVrLittleEndian);
             sop.SyntaxList.Add(TransferSyntax.ImplicitVrLittleEndian);
             sop.SyntaxList.Add(TransferSyntax.ExplicitVrBigEndian);
+            _supportedSops.Add(sop);
         }
 
         #region IDicomScp<MPPSShredContext> Members

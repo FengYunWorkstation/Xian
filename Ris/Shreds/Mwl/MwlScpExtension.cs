@@ -34,8 +34,13 @@ namespace ClearCanvas.Ris.Shreds.Mwl
 
         public MwlScpExtension()
         {
+            var sop = new SupportedSop { SopClass = SopClass.VerificationSopClass };
+            sop.SyntaxList.Add(TransferSyntax.ExplicitVrLittleEndian);
+            sop.SyntaxList.Add(TransferSyntax.ImplicitVrLittleEndian);
+            sop.SyntaxList.Add(TransferSyntax.ExplicitVrBigEndian);
+            _supportedSops.Add(sop);
 
-            var sop = new SupportedSop {SopClass = SopClass.ModalityWorklistInformationModelFind};
+            sop = new SupportedSop {SopClass = SopClass.ModalityWorklistInformationModelFind};
             sop.SyntaxList.Add(TransferSyntax.ImplicitVrLittleEndian);
             sop.SyntaxList.Add(TransferSyntax.ExplicitVrLittleEndian);
             _supportedSops.Add(sop);
@@ -80,13 +85,19 @@ namespace ClearCanvas.Ris.Shreds.Mwl
 
         public DicomPresContextResult VerifyAssociation(AssociationParameters association, byte pcid)
         {
-            
-            var verifier = new AssociationVerifierExtensionPoint().CreateExtension() as IAssociationVerifier;
+            IAssociationVerifier verifier;
+            try
+            {
+                verifier = new AssociationVerifierExtensionPoint().CreateExtension() as IAssociationVerifier;
+            }
+            catch (NotSupportedException)
+            {
+                Platform.Log(LogLevel.Warn, "No AssociationVerifierExtensionPoint found. All MWL connections will be accepted");
+                return DicomPresContextResult.Accept;
+            }
             if (verifier != null)
             {
-                if (verifier.Verify(association.CalledAE))
-                    return DicomPresContextResult.Accept;
-                return DicomPresContextResult.RejectUser;
+                return verifier.Verify(association.CalledAE) ? DicomPresContextResult.Accept : DicomPresContextResult.RejectUser;
             }
             return DicomPresContextResult.Accept; 
         }
