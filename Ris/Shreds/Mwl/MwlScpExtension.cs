@@ -55,6 +55,18 @@ namespace ClearCanvas.Ris.Shreds.Mwl
         public bool OnReceiveRequest(DicomServer server, ServerAssociationParameters association, byte presentationID,
                                      DicomMessage message)
         {
+            if (message.CommandField == DicomCommandField.CEchoRequest)
+            {
+                Platform.Log(LogLevel.Debug,
+                    String.Format("Echo Request From {0} at ip {1}:{2}", association.CallingAE,
+                           association.RemoteEndPoint.Address,
+                           association.RemoteEndPoint.Port));
+
+                server.SendCEchoResponse(presentationID, message.MessageId, DicomStatuses.Success);
+                return true;
+
+            }
+
 
             Platform.Log(LogLevel.Debug,
                          String.Format("Modality Worklist Query From {0} at ip {1}:{2}", association.CallingAE,
