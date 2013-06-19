@@ -173,7 +173,7 @@ namespace ClearCanvas.Dicom.Codec.Rle.Tests
             // Make a copy of the source format
         	DicomAttributeCollection originalDataSet = file.DataSet.Copy();
             DicomAttributeCollection originalMetaInfo = file.MetaInfo.Copy();
-            DicomFile originalFile = new DicomFile("", originalMetaInfo, originalDataSet);
+            DicomFile originalFile = new DicomFile("", originalMetaInfo, DicomAttributeCollection.ToProvider(originalDataSet));
 
             file.ChangeTransferSyntax(TransferSyntax.RleLossless);
 
